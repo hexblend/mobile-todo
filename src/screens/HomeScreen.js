@@ -1,14 +1,16 @@
 // Core
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 // Hooks
 import { useSelector, useDispatch } from "react-redux";
 // Actions
 import { changeText } from '../redux/actions/helloActions';
 
+
 const HomeScreen = () => {
   const initialText = useSelector(state => state.hello.text);
   const dispatch = useDispatch();
+
   return (
     <View style={styles.container}>
       <Text>{initialText}</Text>
@@ -28,9 +30,8 @@ const styles = StyleSheet.create({
   }
 });
 
-// Optional individual page name (default set in App.js)
-// HomeScreen.navigationOptions = () => ({
-//   title: 'Home page'
-// });
+HomeScreen.navigationOptions = () => ({
+  title: 'Todos'
+});
 
 export default HomeScreen;
