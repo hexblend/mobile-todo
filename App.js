@@ -19,7 +19,7 @@ const AppNavigator = createStackNavigator(
   {
     initialRouteName: 'Home',
     defaultNavigationOptions: {
-      title: 'Todo List'
+      title: 'Todos'
     }
   },
 );
