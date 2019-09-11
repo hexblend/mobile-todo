@@ -1,22 +1,15 @@
 import { createStore, combineReducers } from 'redux';
-
 //
 // Reducers
 //
-import helloReducer from "./reducers/helloReducer";
-
-
-//
-// Actions
-//
-
+import todosReducer from "./reducers/todosReducer";
 
 //
 // Store
 //
 const store = createStore(
   combineReducers({
-    hello: helloReducer
+    todos: todosReducer
   })
 );
 export {store};
