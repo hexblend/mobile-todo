@@ -1,19 +1,31 @@
 //
 // Initial state
 //
-const initialState = {
-  text: 'Edit HomeScreen.js to start working on your app!'
-};
+const initialState = [
+  {
+    id: '',
+    todo: '',
+    completed: false
+  }
+];
 
 //
 // Reducer
 //
-const helloReducer = (state = initialState, action) => {
+const todosReducer = (state = initialState, action) => {
   switch(action.type){
-    case 'CHANGE_TEXT':
-      return {...state, text: action.payload};
+    case 'ADD_TODO':
+      return [
+        ...state,
+        {
+          id: action.payload.id,
+          todo: action.payload.todo,
+          completed: false
+        }
+      ];
     default:
       return state;
   }
 };
-export default helloReducer;
+
+export default todosReducer;
