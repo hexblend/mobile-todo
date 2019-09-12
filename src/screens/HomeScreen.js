@@ -8,9 +8,11 @@ import { getTodos, addTodo } from '../redux/actions/todosActions';
 // UUID
 import uuid from "uuid/v1";
 // Icons
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 // Components
 import SingleTodo from "../components/SingleTodo";
+// Animation
+import * as Animatable from 'react-native-animatable';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -21,7 +23,6 @@ const HomeScreen = () => {
   const id = uuid();
   const todos = useSelector(state => state.todos);
   const [todo, setTodo] = useState(todos.todo);
-
   return (
     <View style={styles.container}>
       {/* Signal Bar */}
@@ -33,7 +34,16 @@ const HomeScreen = () => {
         onChangeText={todo => setTodo(todo)}
         style={styles.searchInput}
       />
-      {/* Add Button */}
+      {/* Loading button */}
+      {/*<View style={styles.spinnerIconContainer}>*/}
+      {/*  <Animatable.View*/}
+      {/*    animation="rotate"*/}
+      {/*    easing="linear"*/}
+      {/*    iterationCount="infinite"*/}
+      {/*  >*/}
+      {/*    <AntDesign name="loading1" style={styles.spinnerIcon}/>*/}
+      {/*  </Animatable.View>*/}
+      {/*</View>*/}
       <TouchableOpacity onPress={() => {
         if (todo) {
           dispatch(addTodo(id, todo, date));
@@ -42,6 +52,7 @@ const HomeScreen = () => {
       }}>
         <MaterialIcons name="add" style={styles.addIcon}/>
       </TouchableOpacity>
+
 
       {/* Section title */}
       {todos.length > 0 ? <Text style={styles.sectionTitle}>In Progress:</Text> : null}
@@ -68,6 +79,18 @@ const styles = StyleSheet.create({
     padding: 10,
     color: '#575757',
     marginTop: 20
+  },
+  spinnerIconContainer: {
+    alignSelf: 'center',
+    borderWidth: 1,
+    borderColor: '#cdcdcd',
+    borderRadius: 4,
+    padding: 10,
+    marginTop: 20
+  },
+  spinnerIcon: {
+    fontSize: 24,
+    color: '#575757'
   },
   searchInput: {
     borderWidth: 1,

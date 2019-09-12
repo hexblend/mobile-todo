@@ -1,6 +1,5 @@
 // Firebase
 import { addToDatabase } from '../../api/helperFunctions';
-import firebase from "firebase";
 
 //
 // Action Creators
@@ -9,11 +8,18 @@ export const getTodos = date => {
   return {type: 'GET_TODOS'};
 };
 
+
+// Add
 export const addTodo = (id, todo, date) => {
-  // addToDatabase(
-  //   `todos/${date}/in_progress/${id}`,
-  //   {id, todo, completed: false}
-  // );
+  return async dispatch => {
+        await addToDatabase(
+          `todos/${date}/in_progress/${id}`,
+          {id, todo, completed: false}
+        );
+        dispatch(addTodoAsync(id, todo, date));
+  };
+};
+export const addTodoAsync = (id, todo, date) => {
   return {type: 'ADD_TODO', payload: {id, todo, date}};
 };
 
