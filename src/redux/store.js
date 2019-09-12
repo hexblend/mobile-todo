@@ -1,5 +1,9 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+// Firebase
+import firebaseInit from "../api/firebaseInit";
+firebaseInit();
+
 //
 // Reducers
 //
