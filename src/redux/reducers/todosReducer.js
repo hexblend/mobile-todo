@@ -12,6 +12,8 @@ const initialState = {
 //
 const todosReducer = (state = initialState, action) => {
   switch(action.type){
+    case 'ERROR':
+      return { ...state, error: action.payload }
     case 'LOADING':
       return { ...state, loading: true };
     case 'ADD_TODO':
