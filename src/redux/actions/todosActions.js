@@ -37,20 +37,19 @@ export const getTodos = date => {
 export const getTodosAsync = todos => {
   return {type: 'GET_TODOS', payload: todos}
 };
+
 // Add
 export const addTodo = (id, todo, date) => {
   return async dispatch => {
-        dispatch(loading());
-        await addToDatabase(
-          `todos/${date}/in_progress/${id}`,
-          {id, todo, completed: false}
-        );
-        dispatch(addTodoAsync(id, todo, date));
+    dispatch(loading());
+    dispatch(error(''));
+    await addToDatabase(`todos/${date}/in_progress/${id}`, { id, todo, completed: false });
+    // dispatch(addTodoAsync(id, todo, date));
   };
 };
-export const addTodoAsync = (id, todo, date) => {
-  return {type: 'ADD_TODO', payload: {id, todo, date}};
-};
+// export const addTodoAsync = (id, todo, date) => {
+//   return {type: 'ADD_TODO', payload: {id, todo, date}};
+// };
 
 
 
