@@ -12,6 +12,26 @@ export const loading = () => {
   return {type: 'LOADING'};
 };
 
+// Get
+export const getTodos = date => {
+  return async dispatch => {
+    dispatch(loading());
+    const ref = database.ref(`todos/${date}/in_progress`);
+    await ref.on('value', snapshot => {
+      var returnArr = [];
+      snapshot.forEach(childSnapshot => {
+        const item = childSnapshot.val();
+        item.key = childSnapshot.key;
+        returnArr.push(item);
+      });
+      dispatch(getTodosAsync(returnArr));
+      returnArr.length == 0 && dispatch(error('No todos yet'));
+    });
+  };
+};
+export const getTodosAsync = todos => {
+  return {type: 'GET_TODOS', payload: todos}
+};
 // Add
 export const addTodo = (id, todo, date) => {
   return async dispatch => {
