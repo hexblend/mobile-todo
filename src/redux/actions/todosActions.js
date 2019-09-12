@@ -1,5 +1,7 @@
 // Firebase
 import { addToDatabase } from '../../api/helperFunctions';
+import firebase from "firebase";
+const database = firebase.database();
 
 //
 // Action Creators
