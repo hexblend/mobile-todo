@@ -16,15 +16,16 @@ const todosReducer = (state = initialState, action) => {
       return { ...state, error: action.payload }
     case 'LOADING':
       return { ...state, loading: true };
-    case 'ADD_TODO':
-      return {...state,
-        todos: [...state.todos, {
-          id: action.payload.id,
-          todo: action.payload.todo,
-          completed: false
-        }],
-        loading: false
-      };
+    case 'GET_TODOS':
+      return { ...state, todos: action.payload, loading: false };
+    // case 'ADD_TODO':
+    //   return {...state,
+    //     todos: [...state.todos, {
+    //       todo: action.payload.todo,
+    //       completed: false
+    //     }],
+    //     loading: false
+    //   };
     default:
       return state;
   }
