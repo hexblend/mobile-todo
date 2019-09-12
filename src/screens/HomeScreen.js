@@ -1,10 +1,10 @@
 // Core
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, FlatList, StatusBar, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, FlatList, StatusBar, TouchableOpacity, ScrollView, Button, SafeAreaView } from 'react-native';
 // Hooks
 import { useSelector, useDispatch } from "react-redux";
 // Actions
-import { addTodo } from '../redux/actions/todosActions';
+import { addTodo, getTodos } from '../redux/actions/todosActions';
 // UUID
 import uuid from "uuid/v1";
 // Icons
@@ -20,64 +20,83 @@ const HomeScreen = () => {
   const date = getDate();
   const id = uuid();
 
+  useEffect(() => {
+    dispatch(getTodos(date));
+  }, []);
+
   const state = useSelector(state => state.todosReducer);
   const todos = state.todos;
   const loading = state.loading;
-
+  const error = state.error;
 
   const [todo, setTodo] = useState('');
   return (
     <View style={styles.container}>
       {/* Signal Bar */}
       <StatusBar barStyle="light-content"/>
-      {/* Input */}
-      <TextInput
-        placeholder="Add todo"
-        value={todo}
-        onChangeText={todo => setTodo(todo)}
-        style={styles.searchInput}
-      />
 
-      {/* Add/Loading button */}
-      {loading
-        ? <View style={styles.spinnerIconContainer}>
-            <Animatable.View
-              animation="rotate"
-              easing="linear"
-              iterationCount="infinite"
-            >
-              <AntDesign name="loading2" style={styles.spinnerIcon}/>
-            </Animatable.View>
-          </View>
-        : <TouchableOpacity onPress={() => {
+      <View style={{flexDirection: 'row'}}>
+        {/* Input */}
+        <TextInput
+          placeholder="Add todo"
+          value={todo}
+          onChangeText={todo => setTodo(todo)}
+          style={styles.searchInput}
+          onSubmitEditing={() => {
             if (todo) {
               dispatch(addTodo(id, todo, date));
               setTodo('');
             }
-          }}>
-            <MaterialIcons name="add" style={styles.addIcon}/>
-          </TouchableOpacity>
-      }
+          }}
+        />
 
+        {/* Add/Loading button */}
+        {loading
+          ? <View style={styles.spinnerIconContainer}>
+              <Animatable.View
+                animation="rotate"
+                easing="linear"
+                iterationCount="infinite"
+              >
+                <AntDesign name="loading2" style={styles.spinnerIcon}/>
+              </Animatable.View>
+            </View>
+          : <TouchableOpacity onPress={() => {
+              if (todo) {
+                dispatch(addTodo(id, todo, date));
+                setTodo('');
+              }
+            }}>
+              <MaterialIcons name="add" style={styles.addIcon}/>
+            </TouchableOpacity>
+        }
+      </View>
 
-      {/* Section title */}
+      {/* Section title */ }
       {todos.length > 0 ? <Text style={styles.sectionTitle}>In Progress:</Text> : null}
+
       {/* Todo list */}
-      <FlatList
-        data={todos}
-        renderItem={ ({ item }) => <SingleTodo key={item.id} todo={item.todo} /> }
-        keyExtractor={item => item.id}
-      />
+        <SafeAreaView style={{flex:1}}>
+          <FlatList
+            data={todos}
+            renderItem={ ({ item }) => <SingleTodo key={item.id} todo={item.todo} /> }
+            keyExtractor={item => item.id}
+          />
+        </SafeAreaView>
+      {/* Error */}
+      {error ? <Text style={styles.error}>{error}</Text> : null}
+
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 10
+    marginHorizontal: 10,
+    flex: 1
   },
   addIcon: {
-    fontSize: 24,
+    fontSize: 20,
     alignSelf: 'center',
     borderWidth: 1,
     borderColor: '#cdcdcd',
@@ -95,7 +114,7 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   spinnerIcon: {
-    fontSize: 24,
+    fontSize: 20,
     color: '#575757'
   },
   searchInput: {
@@ -104,13 +123,20 @@ const styles = StyleSheet.create({
     borderColor: '#cdcdcd',
     paddingVertical: 10,
     paddingHorizontal: 5,
-    marginTop: 15
+    marginTop: 20,
+    flex: 1,
+    marginRight: 10
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
+    marginTop: 25,
+    marginBottom: 10
+  },
+  error: {
+    alignSelf: 'center',
     marginTop: 30,
-    marginBottom: 20
+    fontSize: 16
   }
 });
 
