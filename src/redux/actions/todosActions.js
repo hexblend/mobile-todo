@@ -12,6 +12,11 @@ export const loading = () => {
   return {type: 'LOADING'};
 };
 
+// Error
+export const error = msg => {
+  return {type: 'ERROR', payload: msg};
+};
+
 // Get
 export const getTodos = date => {
   return async dispatch => {
