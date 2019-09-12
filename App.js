@@ -8,9 +8,6 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 // Screens
 import HomeScreen from './src/screens/HomeScreen'
-// Firebase
-import firebaseInit from "./src/api/firebaseInit";
-firebaseInit();
 
 
 
@@ -24,12 +21,12 @@ const AppNavigator = createStackNavigator(
       title: 'Todos',
 
       headerStyle: {
-        backgroundColor: '#4c5cf4',
-        height: 100
+        backgroundColor: '#685df4',
+        // height: 50
       },
       headerTintColor: '#fff',
       headerTitleStyle: {
-        fontSize: 24
+        fontSize: 22
       }
     },
   },
