@@ -1,6 +1,6 @@
 // Core
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, TextInput, StyleSheet, FlatList, StatusBar, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, FlatList, StatusBar, TouchableOpacity } from 'react-native';
 // Hooks
 import { useSelector, useDispatch } from "react-redux";
 // Actions
@@ -15,12 +15,10 @@ import SingleTodo from "../components/SingleTodo";
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const date = getDate();
-  const id = uuid();
-
   useEffect(() => {
     dispatch(getTodos(date));
-  }, []);
-
+  });
+  const id = uuid();
   const todos = useSelector(state => state.todos);
   const [todo, setTodo] = useState(todos.todo);
 
@@ -28,14 +26,14 @@ const HomeScreen = () => {
     <View style={styles.container}>
       {/* Signal Bar */}
       <StatusBar barStyle="light-content"/>
-      {/* Add Todo Input */}
+      {/* Input */}
       <TextInput
         placeholder="Add todo"
         value={todo}
         onChangeText={todo => setTodo(todo)}
         style={styles.searchInput}
       />
-      {/* Add Todo Button */}
+      {/* Add Button */}
       <TouchableOpacity onPress={() => {
         if (todo) {
           dispatch(addTodo(id, todo, date));
@@ -50,7 +48,7 @@ const HomeScreen = () => {
       {/* Todo list */}
       <FlatList
         data={todos}
-        renderItem={ ({ item }) => <SingleTodo todo={item.todo} /> }
+        renderItem={ ({ item }) => <SingleTodo key={item.id} todo={item.todo} /> }
         keyExtractor={item => item.id}
       />
     </View>

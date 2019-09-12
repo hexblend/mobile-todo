@@ -1,18 +1,19 @@
 // Firebase
-import firebase from 'firebase';
-import firebaseInit from '../../api/Firebase';
-firebaseInit();
+import { addToDatabase } from '../../api/helperFunctions';
+import firebase from "firebase";
 
 //
 // Action Creators
 //
-export const addTodo = (id, todo, date) => {
-  const database =  firebase.database();
-  database.ref(`todos/${date}/in_progress/${id}`).set({
-    todo: todo,
-    completed: false
-  }).then(() => console.log(`'${todo}' was added to the todo list.`)).catch(err => console.log(err));
+export const getTodos = date => {
+  return {type: 'GET_TODOS'};
+};
 
+export const addTodo = (id, todo, date) => {
+  // addToDatabase(
+  //   `todos/${date}/in_progress/${id}`,
+  //   {id, todo, completed: false}
+  // );
   return {type: 'ADD_TODO', payload: {id, todo, date}};
 };
 

@@ -9,7 +9,9 @@ import { createStackNavigator } from 'react-navigation-stack';
 // Screens
 import HomeScreen from './src/screens/HomeScreen'
 // Firebase
-import firebase from 'firebase';
+import firebaseInit from "./src/api/firebaseInit";
+firebaseInit();
+
 
 
 const AppNavigator = createStackNavigator(
@@ -20,7 +22,7 @@ const AppNavigator = createStackNavigator(
     initialRouteName: 'Home',
     defaultNavigationOptions: {
       title: 'Todos',
-      
+
       headerStyle: {
         backgroundColor: '#4c5cf4',
         height: 100
