@@ -4,7 +4,7 @@ import { View, Text, TextInput, StyleSheet, FlatList, StatusBar, TouchableOpacit
 // Hooks
 import { useSelector, useDispatch } from "react-redux";
 // Actions
-import { getTodos, addTodo } from '../redux/actions/todosActions';
+import { addTodo } from '../redux/actions/todosActions';
 // UUID
 import uuid from "uuid/v1";
 // Icons
@@ -16,13 +16,16 @@ import * as Animatable from 'react-native-animatable';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
+
   const date = getDate();
-  useEffect(() => {
-    dispatch(getTodos(date));
-  });
   const id = uuid();
-  const todos = useSelector(state => state.todos);
-  const [todo, setTodo] = useState(todos.todo);
+
+  const state = useSelector(state => state.todosReducer);
+  const todos = state.todos;
+  const loading = state.loading;
+
+
+  const [todo, setTodo] = useState('');
   return (
     <View style={styles.container}>
       {/* Signal Bar */}
@@ -34,24 +37,27 @@ const HomeScreen = () => {
         onChangeText={todo => setTodo(todo)}
         style={styles.searchInput}
       />
-      {/* Loading button */}
-      {/*<View style={styles.spinnerIconContainer}>*/}
-      {/*  <Animatable.View*/}
-      {/*    animation="rotate"*/}
-      {/*    easing="linear"*/}
-      {/*    iterationCount="infinite"*/}
-      {/*  >*/}
-      {/*    <AntDesign name="loading1" style={styles.spinnerIcon}/>*/}
-      {/*  </Animatable.View>*/}
-      {/*</View>*/}
-      <TouchableOpacity onPress={() => {
-        if (todo) {
-          dispatch(addTodo(id, todo, date));
-          setTodo('');
-        }
-      }}>
-        <MaterialIcons name="add" style={styles.addIcon}/>
-      </TouchableOpacity>
+
+      {/* Add/Loading button */}
+      {loading
+        ? <View style={styles.spinnerIconContainer}>
+            <Animatable.View
+              animation="rotate"
+              easing="linear"
+              iterationCount="infinite"
+            >
+              <AntDesign name="loading2" style={styles.spinnerIcon}/>
+            </Animatable.View>
+          </View>
+        : <TouchableOpacity onPress={() => {
+            if (todo) {
+              dispatch(addTodo(id, todo, date));
+              setTodo('');
+            }
+          }}>
+            <MaterialIcons name="add" style={styles.addIcon}/>
+          </TouchableOpacity>
+      }
 
 
       {/* Section title */}

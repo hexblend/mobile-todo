@@ -1,24 +1,27 @@
 //
 // Initial state
 //
-const initialState = [];
+const initialState = {
+  todos: [],
+  loading: false
+};
 
 //
 // Reducer
 //
 const todosReducer = (state = initialState, action) => {
   switch(action.type){
-    case 'GET_TODOS':
-      return state;
+    case 'LOADING':
+      return { ...state, loading: true };
     case 'ADD_TODO':
-      return [
-        ...state,
-        {
+      return {...state,
+        todos: [...state.todos, {
           id: action.payload.id,
           todo: action.payload.todo,
           completed: false
-        }
-      ];
+        }],
+        loading: false
+      };
     default:
       return state;
   }

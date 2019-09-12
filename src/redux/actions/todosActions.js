@@ -4,14 +4,16 @@ import { addToDatabase } from '../../api/helperFunctions';
 //
 // Action Creators
 //
-export const getTodos = date => {
-  return {type: 'GET_TODOS'};
-};
 
+// Loading
+export const loading = () => {
+  return {type: 'LOADING'};
+};
 
 // Add
 export const addTodo = (id, todo, date) => {
   return async dispatch => {
+        dispatch(loading());
         await addToDatabase(
           `todos/${date}/in_progress/${id}`,
           {id, todo, completed: false}

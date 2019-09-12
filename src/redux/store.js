@@ -10,7 +10,7 @@ import todosReducer from "./reducers/todosReducer";
 //
 const store = createStore(
   combineReducers({
-    todos: todosReducer
+    todosReducer
   }),
   applyMiddleware(thunk)
 );
