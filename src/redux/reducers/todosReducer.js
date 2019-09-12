@@ -3,7 +3,8 @@
 //
 const initialState = {
   todos: [],
-  loading: false
+  loading: false,
+  error: ''
 };
 
 //
