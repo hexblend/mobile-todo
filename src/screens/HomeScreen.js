@@ -8,6 +8,7 @@ import {changeFormStatus, getTodos} from '../redux/actions/todosActions';
 // Components
 import SingleTodo from "../components/SingleTodo";
 import Form from "../components/form/Form";
+import Error from "../components/Error";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -54,9 +55,10 @@ const HomeScreen = () => {
             }} /> }
           keyExtractor={(item, index) => item.key}
         />
-        {/* Error */}
-        {error ? <Text style={styles.error}>{error}</Text> : null}
       </SafeAreaView>
+
+      {/* Error */}
+      {error ? <Error message="No todos yet" /> : null}
     </View>
   );
 };
@@ -72,11 +74,6 @@ const styles = StyleSheet.create({
     marginTop: 25,
     marginBottom: 10
   },
-  error: {
-    alignSelf: 'center',
-    fontSize: 16,
-    flex: 10
-  }
 });
 
 const getDate = () => {
@@ -88,7 +85,6 @@ const getDate = () => {
     ? '0' + (today.getMonth() + 1)
     : today.getMonth() + 1;
   let year = today.getFullYear();
-
   return day + '-' + month + '-' + year;
 };
 
