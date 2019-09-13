@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import CheckBox from 'react-native-check-box'
 import { FontAwesome, AntDesign } from '@expo/vector-icons';
-import {deleteTodo, markCompleted} from "../redux/actions/todosActions";
+import {changeFormStatus, deleteTodo, markCompleted} from "../redux/actions/todosActions";
 
 const SingleTodo = ({ todo, date, onEditItem }) => {
   const dispatch = useDispatch();
@@ -21,7 +21,10 @@ const SingleTodo = ({ todo, date, onEditItem }) => {
         {!completed &&
           <TouchableOpacity
             style={{marginRight: 15, marginTop: 2}}
-            onPress={() => onEditItem(id, todoText)}
+            onPress={() => {
+              onEditItem(id, todoText);
+              dispatch(changeFormStatus('update'));
+            }}
           >
             <AntDesign name="edit" size={22}/>
           </TouchableOpacity>

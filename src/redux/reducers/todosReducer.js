@@ -3,7 +3,7 @@
 //
 const initialState = {
   todos: [],
-  formStatus: 'submit',
+  formStatus: '',
   error: ''
 };
 
