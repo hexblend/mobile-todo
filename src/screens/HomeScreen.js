@@ -1,6 +1,6 @@
 // Core
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, FlatList, StatusBar, TouchableOpacity, ScrollView, Button, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, FlatList, StatusBar, TouchableOpacity, Platform, SafeAreaView } from 'react-native';
 // Hooks
 import { useSelector, useDispatch } from "react-redux";
 // Actions
@@ -96,12 +96,12 @@ const styles = StyleSheet.create({
     flex: 1
   },
   addIcon: {
-    fontSize: 20,
+    fontSize: Platform.OS === 'ios' ? 20 : 22,
     alignSelf: 'center',
     borderWidth: 1,
     borderColor: '#cdcdcd',
     borderRadius: 4,
-    padding: 10,
+    padding: Platform.OS === 'android' ? 12 : 10,
     color: '#575757',
     marginTop: 20
   },
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderColor: '#cdcdcd',
     paddingVertical: 10,
-    paddingHorizontal: 5,
+    paddingLeft: 10,
     marginTop: 20,
     flex: 1,
     marginRight: 10
