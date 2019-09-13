@@ -1,5 +1,5 @@
 // Firebase
-import { addToDatabase } from '../../api/helperFunctions';
+import { addToDatabase, updateDatabase, deleteFromDatabase } from '../../api/helperFunctions';
 import firebase from "firebase";
 const database = firebase.database();
 
@@ -9,7 +9,7 @@ const database = firebase.database();
 
 // Loading
 export const loading = () => {
-  return {type: 'LOADING'};
+  return {type: 'LOADING', payload: true};
 };
 
 // Error
@@ -21,17 +21,18 @@ export const error = msg => {
 export const getTodos = date => {
   return async dispatch => {
     dispatch(loading());
-    const ref = database.ref(`todos/${date}/in_progress`);
-    await ref.on('value', snapshot => {
-      var returnArr = [];
-      snapshot.forEach(childSnapshot => {
-        const item = childSnapshot.val();
-        item.key = childSnapshot.key;
-        returnArr.push(item);
+    await database
+      .ref(`todos/${date}`)
+      .on('value', snapshot => {
+        var returnArr = [];
+        snapshot.forEach(childSnapshot => {
+          const item = childSnapshot.val();
+          item.key = childSnapshot.key;
+          returnArr.push(item);
+        });
+        returnArr.length === 0 && dispatch(error('No todos yet'));
+        dispatch(getTodosAsync(returnArr));
       });
-      dispatch(getTodosAsync(returnArr));
-      returnArr.length == 0 && dispatch(error('No todos yet'));
-    });
   };
 };
 export const getTodosAsync = todos => {
@@ -43,13 +44,24 @@ export const addTodo = (id, todo, date) => {
   return async dispatch => {
     dispatch(loading());
     dispatch(error(''));
-    await addToDatabase(`todos/${date}/in_progress/${id}`, { id, todo, completed: false });
-    // dispatch(addTodoAsync(id, todo, date));
+    await addToDatabase(`todos/${date}/${id}`, { id, todo, completed: false });
   };
 };
-// export const addTodoAsync = (id, todo, date) => {
-//   return {type: 'ADD_TODO', payload: {id, todo, date}};
-// };
+
+// Mark completed
+export const markCompleted = (id, completed, date) => {
+  return async () => {
+    return await updateDatabase(`todos/${date}/${id}`, {completed: !completed});
+  };
+};
+
+// Remove
+export const deleteTodo = (id, date) => {
+  return async () => {
+    return await deleteFromDatabase(`todos/${date}/${id}`);
+  };
+};
+
 
 
 

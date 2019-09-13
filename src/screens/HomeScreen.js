@@ -79,12 +79,12 @@ const HomeScreen = () => {
         <SafeAreaView style={{flex:1}}>
           <FlatList
             data={todos}
-            renderItem={ ({ item }) => <SingleTodo key={item.id} todo={item.todo} /> }
-            keyExtractor={item => item.id}
+            renderItem={ ({ item }) => <SingleTodo todo={item} date={date} /> }
+            keyExtractor={(item, index) => item.id.toString()}
           />
+          {error ? <Text style={styles.error}>{error}</Text> : null}
         </SafeAreaView>
       {/* Error */}
-      {error ? <Text style={styles.error}>{error}</Text> : null}
 
     </View>
   );
@@ -135,8 +135,8 @@ const styles = StyleSheet.create({
   },
   error: {
     alignSelf: 'center',
-    marginTop: 30,
-    fontSize: 16
+    fontSize: 16,
+    flex: 10
   }
 });
 
