@@ -13,6 +13,7 @@ export const Input = ({todo, setTodo, newID, date, updateID}) => {
   return (
     <Fragment>
       <TextInput
+        autoCorrect={false}
         placeholder="Add todo"
         value={todo}
         onChangeText={todoText => setTodo(todoText)}

@@ -23,12 +23,17 @@ export const getTodos = date => {
     dispatch(changeFormStatus('loading'));
     await database
       .ref(`todos/${date}`)
+      .orderByChild('timestamp')
       .on('value', snapshot => {
+        this.data = [];
+        snapshot.forEach(function(child) {
+          this.data.push(child.val());
+        }.bind(this));
         var returnArr = [];
         snapshot.forEach(childSnapshot => {
           const item = childSnapshot.val();
           item.key = childSnapshot.key;
-          returnArr.push(item);
+          returnArr.unshift(item);
         });
         returnArr.length === 0 && dispatch(error('No todos yet'));
         dispatch(getTodosAsync(returnArr));
@@ -44,7 +49,7 @@ export const addTodo = (id, todo, date) => {
   return async dispatch => {
     dispatch(changeFormStatus('loading'));
     dispatch(error(''));
-    await addToDatabase(`todos/${date}/${id}`, { id, todo, completed: false });
+    await addToDatabase(`todos/${date}/${id}`, { id, todo, completed: false, timestamp: Date.now() } );
   };
 };
 

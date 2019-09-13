@@ -44,6 +44,7 @@ const HomeScreen = () => {
       {/* Todo list */}
       <SafeAreaView style={{flex:1, marginBottom: 10}}>
         <FlatList
+          showsVerticalScrollIndicator={false}
           data={todos}
           renderItem={ ({ item }) => <SingleTodo
             todo={item}

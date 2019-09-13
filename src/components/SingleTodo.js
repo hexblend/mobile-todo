@@ -70,7 +70,8 @@ const styles = StyleSheet.create({
     paddingVertical: 15
   },
   completedTodoItem: {
-    color: '#afafaf',
+    color: '#9b9b9b',
+    textDecorationLine: 'line-through'
   }
 });
 

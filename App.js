@@ -8,8 +8,8 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 // Screens
 import HomeScreen from './src/screens/HomeScreen'
-
-
+// Fix for 'Setting a timer' warning on anroid
+console.ignoredYellowBox = ['Setting a timer'];
 
 const AppNavigator = createStackNavigator(
   {
