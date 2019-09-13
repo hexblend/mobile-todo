@@ -11,6 +11,7 @@ import uuid from "uuid/v1";
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 // Components
 import SingleTodo from "../components/SingleTodo";
+import AddUpdateForm from "../components/AddUpdateForm";
 // Animation
 import * as Animatable from 'react-native-animatable';
 
@@ -35,6 +36,13 @@ const HomeScreen = () => {
     <View style={styles.container}>
       {/* Signal Bar */}
       <StatusBar barStyle="light-content"/>
+
+      <AddUpdateForm
+        todo={todo}
+        setTodo={todo => setTodo(todo)}
+        editTodo={editTodo}
+        setEditTodo={object => setEditTodo(object)}
+      />
 
       {/* Add Input/Button */}
       {!editTodo.bool ?
