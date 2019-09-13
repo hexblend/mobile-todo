@@ -3,7 +3,7 @@
 //
 const initialState = {
   todos: [],
-  loading: false,
+  formStatus: 'submit',
   error: ''
 };
 
@@ -13,11 +13,13 @@ const initialState = {
 const todosReducer = (state = initialState, action) => {
   switch(action.type){
     case 'LOADING':
-      return { ...state, loading: action.payload };
+      return { ...state, formStatus: action.payload };
     case 'ERROR':
       return { ...state, error: action.payload};
     case 'GET_TODOS':
-      return { ...state, todos: action.payload, loading: false};
+      return { ...state, todos: action.payload, formStatus: 'submit'};
+    case 'UPDATE':
+      return {...state, formStatus: 'submit'}
     default:
       return state;
   }

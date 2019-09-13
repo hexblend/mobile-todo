@@ -4,23 +4,25 @@ import { View, TextInput, StyleSheet, TouchableOpacity, Platform } from 'react-n
 // Hooks
 import { useSelector, useDispatch } from "react-redux";
 // Actions
-import {addTodo, updateTodo} from "../redux/actions/todosActions";
+import {addTodo, updateTodo} from "../../redux/actions/todosActions";
 // Animation
 import * as Animatable from "react-native-animatable";
 // Icons
 import {AntDesign, MaterialIcons} from "@expo/vector-icons";
 // UUID
 import uuid from "uuid/v1";
+import SubmitButton from "./SubmitButton";
+// Components
 
 
-export const AddUpdateForm = (todo, editTodo) => {
+export const Form = (todo, editTodo) => {
   const dispatch = useDispatch();
 
   const date = getDate();
   const id = uuid();
 
   const state = useSelector(state => state.todosReducer);
-  const loading = state.loading;
+  const formStatus = state.formStatus;
 
   return (
     <View>
@@ -39,6 +41,28 @@ export const AddUpdateForm = (todo, editTodo) => {
                 }
               }}
             />
+            <SubmitButton/>
+            {formStatus === 'loading'
+              // Loading Button
+              ? <View style={styles.spinnerIconContainer}>
+                  <Animatable.View
+                    animation="rotate"
+                    easing="linear"
+                    iterationCount="infinite"
+                  >
+                    <AntDesign name="loading2" style={styles.spinnerIcon}/>
+                  </Animatable.View>
+                </View>
+              // Add Button
+              : <TouchableOpacity onPress={() => {
+                  if (todo) {
+                    dispatch(addTodo(id, todo, date));
+                    setTodo('');
+                  }
+                }}>
+                  <MaterialIcons name="add" style={styles.addIcon}/>
+                </TouchableOpacity>
+            }
           </View>
         // Edit Todo Form
         : null
@@ -100,4 +124,4 @@ const getDate = () => {
   return day + '-' + month + '-' + year;
 };
 
-export default AddUpdateForm;
+export default Form;

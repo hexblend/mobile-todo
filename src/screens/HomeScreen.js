@@ -4,14 +4,14 @@ import { View, Text, TextInput, StyleSheet, FlatList, StatusBar, TouchableOpacit
 // Hooks
 import { useSelector, useDispatch } from "react-redux";
 // Actions
-import { addTodo, getTodos, updateTodo } from '../redux/actions/todosActions';
+import {addTodo, changeFormStatus, getTodos, updateTodo} from '../redux/actions/todosActions';
 // UUID
 import uuid from "uuid/v1";
 // Icons
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 // Components
 import SingleTodo from "../components/SingleTodo";
-import AddUpdateForm from "../components/AddUpdateForm";
+import Form from "../components/form/Form";
 // Animation
 import * as Animatable from 'react-native-animatable';
 
@@ -27,7 +27,7 @@ const HomeScreen = () => {
 
   const state = useSelector(state => state.todosReducer);
   const todos = state.todos;
-  const loading = state.loading;
+  const formStatus = state.formStatus;
   const error = state.error;
 
   const [todo, setTodo] = useState('');
@@ -37,7 +37,8 @@ const HomeScreen = () => {
       {/* Signal Bar */}
       <StatusBar barStyle="light-content"/>
 
-      <AddUpdateForm
+      {/* Form */}
+      <Form
         todo={todo}
         setTodo={todo => setTodo(todo)}
         editTodo={editTodo}
@@ -61,7 +62,7 @@ const HomeScreen = () => {
             }}
           />
           {/* Add/Loading button */}
-          {loading
+          {formStatus === 'loading'
             ? <View style={styles.spinnerIconContainer}>
                 <Animatable.View
                   animation="rotate"
@@ -99,7 +100,7 @@ const HomeScreen = () => {
             }}
           />
           {/* Update/Loading button */}
-          {loading
+          {formStatus === 'loading'
             ? <View style={styles.spinnerIconContainer}>
               <Animatable.View
                 animation="rotate"
@@ -134,7 +135,8 @@ const HomeScreen = () => {
               date={date}
               onEditItem={(todoID, todoText) => {
                 setTodo(todoText);
-                setEditTodo({bool: true, id: todoID});
+                setEditTodo({id: todoID});
+                dispatch(changeFormStatus('update'));
               }} /> }
             keyExtractor={(item, index) => item.id.toString()}
           />

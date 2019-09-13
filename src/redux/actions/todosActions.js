@@ -8,8 +8,8 @@ const database = firebase.database();
 //
 
 // Loading
-export const loading = () => {
-  return {type: 'LOADING', payload: true};
+export const changeFormStatus = (status) => {
+  return {type: 'LOADING', payload: status};
 };
 
 // Error
@@ -20,7 +20,7 @@ export const error = msg => {
 // Get
 export const getTodos = date => {
   return async dispatch => {
-    dispatch(loading());
+    dispatch(changeFormStatus('loading'));
     await database
       .ref(`todos/${date}`)
       .on('value', snapshot => {
@@ -42,7 +42,7 @@ export const getTodosAsync = todos => {
 // Add
 export const addTodo = (id, todo, date) => {
   return async dispatch => {
-    dispatch(loading());
+    dispatch(changeFormStatus('loading'));
     dispatch(error(''));
     await addToDatabase(`todos/${date}/${id}`, { id, todo, completed: false });
   };
@@ -57,8 +57,10 @@ export const markCompleted = (id, completed, date) => {
 
 // Update
 export const updateTodo = (id, todo, date) => {
-  return async () => {
-    return await updateDatabase(`todos/${date}/${id}`, {todo});
+  return async dispatch => {
+    dispatch(changeFormStatus('update'));
+    await updateDatabase(`todos/${date}/${id}`, {todo});
+    return {type: 'UPDATE_TODO'}
   };
 };
 
