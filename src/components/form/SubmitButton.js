@@ -1,6 +1,6 @@
 // Core
 import React,{Fragment} from 'react';
-import {View, StyleSheet, TouchableOpacity, Platform} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Platform, Keyboard} from 'react-native';
 // Hooks
 import { useSelector, useDispatch } from "react-redux";
 import * as Animatable from "react-native-animatable";
@@ -17,6 +17,7 @@ export const SubmitButton = ({todo, setTodo, newID, date, updateID}) => {
     <Fragment>
       {formStatus === 'submit' &&
         <TouchableOpacity onPress={() => {
+          Keyboard.dismiss();
           if (todo) {
             setTodo('');
             return dispatch(addTodo(newID, todo, date));
@@ -28,6 +29,7 @@ export const SubmitButton = ({todo, setTodo, newID, date, updateID}) => {
 
       {formStatus === 'update' &&
         <TouchableOpacity onPress={() => {
+          Keyboard.dismiss();
           if (todo) {
             setTodo('');
             return dispatch(updateTodo(updateID, todo, date));

@@ -8,8 +8,6 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 // Screens
 import HomeScreen from './src/screens/HomeScreen'
-// Fix for 'Setting a timer' warning on anroid
-console.ignoredYellowBox = ['Setting a timer'];
 
 const AppNavigator = createStackNavigator(
   {
@@ -34,6 +32,8 @@ const AppNavigator = createStackNavigator(
 
 const App = createAppContainer(AppNavigator);
 export default () => {
+  // Fix for 'Setting a timer' warning on anroid
+  console.ignoredYellowBox = ['Setting a timer'];
   return (
     <Provider store={store}>
       <App />
