@@ -55,6 +55,13 @@ export const markCompleted = (id, completed, date) => {
   };
 };
 
+// Update
+export const updateTodo = (id, todo, date) => {
+  return async () => {
+    return await updateDatabase(`todos/${date}/${id}`, {todo});
+  };
+};
+
 // Remove
 export const deleteTodo = (id, date) => {
   return async () => {

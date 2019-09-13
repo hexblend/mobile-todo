@@ -4,7 +4,7 @@ import { View, Text, TextInput, StyleSheet, FlatList, StatusBar, TouchableOpacit
 // Hooks
 import { useSelector, useDispatch } from "react-redux";
 // Actions
-import { addTodo, getTodos } from '../redux/actions/todosActions';
+import { addTodo, getTodos, updateTodo } from '../redux/actions/todosActions';
 // UUID
 import uuid from "uuid/v1";
 // Icons
@@ -30,29 +30,69 @@ const HomeScreen = () => {
   const error = state.error;
 
   const [todo, setTodo] = useState('');
+  const [editTodo, setEditTodo] = useState({});
   return (
     <View style={styles.container}>
       {/* Signal Bar */}
       <StatusBar barStyle="light-content"/>
 
-      <View style={{flexDirection: 'row'}}>
-        {/* Input */}
-        <TextInput
-          placeholder="Add todo"
-          value={todo}
-          onChangeText={todo => setTodo(todo)}
-          style={styles.searchInput}
-          onSubmitEditing={() => {
-            if (todo) {
-              dispatch(addTodo(id, todo, date));
-              setTodo('');
-            }
-          }}
-        />
+      {/* Add Input/Button */}
+      {!editTodo.bool ?
+        <View style={{flexDirection: 'row'}}>
+          {/* Input */}
+          <TextInput
+            placeholder="Add todo"
+            value={todo}
+            onChangeText={todo => setTodo(todo)}
+            style={styles.searchInput}
+            onSubmitEditing={() => {
+              if (todo) {
+                dispatch(addTodo(id, todo, date));
+                setTodo('');
+              }
+            }}
+          />
+          {/* Add/Loading button */}
+          {loading
+            ? <View style={styles.spinnerIconContainer}>
+                <Animatable.View
+                  animation="rotate"
+                  easing="linear"
+                  iterationCount="infinite"
+                >
+                  <AntDesign name="loading2" style={styles.spinnerIcon}/>
+                </Animatable.View>
+              </View>
+            : <TouchableOpacity onPress={() => {
+                if (todo) {
+                  dispatch(addTodo(id, todo, date));
+                  setTodo('');
+                }
+              }}>
+                <MaterialIcons name="add" style={styles.addIcon}/>
+              </TouchableOpacity>
+          }
+        </View>
 
-        {/* Add/Loading button */}
-        {loading
-          ? <View style={styles.spinnerIconContainer}>
+      : // Update Input/Button
+        <View style={{flexDirection: 'row'}}>
+          {/* Input */}
+          <TextInput
+            placeholder="Add todo"
+            value={todo}
+            onChangeText={todo => setTodo(todo)}
+            style={styles.searchInput}
+            onSubmitEditing={() => {
+              if (todo) {
+                dispatch(updateTodo(editTodo.id, todo, date));
+                setTodo('');
+                setEditTodo({...editTodo, bool: false});
+              }
+            }}
+          />
+          {/* Update/Loading button */}
+          {loading
+            ? <View style={styles.spinnerIconContainer}>
               <Animatable.View
                 animation="rotate"
                 easing="linear"
@@ -61,25 +101,33 @@ const HomeScreen = () => {
                 <AntDesign name="loading2" style={styles.spinnerIcon}/>
               </Animatable.View>
             </View>
-          : <TouchableOpacity onPress={() => {
+            : <TouchableOpacity onPress={() => {
               if (todo) {
-                dispatch(addTodo(id, todo, date));
+                dispatch(updateTodo(editTodo.id, todo, date));
                 setTodo('');
+                setEditTodo({...editTodo, bool: false});
               }
             }}>
-              <MaterialIcons name="add" style={styles.addIcon}/>
+              <AntDesign name="edit" style={styles.addIcon}/>
             </TouchableOpacity>
-        }
-      </View>
+          }
+        </View>
+      }
 
       {/* Section title */ }
       {todos.length > 0 ? <Text style={styles.sectionTitle}>In Progress:</Text> : null}
 
       {/* Todo list */}
-        <SafeAreaView style={{flex:1}}>
+        <SafeAreaView style={{flex:1, marginBottom: 10}}>
           <FlatList
             data={todos}
-            renderItem={ ({ item }) => <SingleTodo todo={item} date={date} /> }
+            renderItem={ ({ item }) => <SingleTodo
+              todo={item}
+              date={date}
+              onEditItem={(todoID, todoText) => {
+                setTodo(todoText);
+                setEditTodo({bool: true, id: todoID});
+              }} /> }
             keyExtractor={(item, index) => item.id.toString()}
           />
           {error ? <Text style={styles.error}>{error}</Text> : null}
