@@ -24,6 +24,7 @@ const HomeScreen = () => {
 
   const [todo, setTodo] = useState('');
   const [updateID, setUpdateID] = useState('');
+  console.ignoredYellowBox = ['Setting a timer'];
   return (
     <View style={styles.container}>
       {/* Signal Bar */}

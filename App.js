@@ -32,8 +32,6 @@ const AppNavigator = createStackNavigator(
 
 const App = createAppContainer(AppNavigator);
 export default () => {
-  // Fix for 'Setting a timer' warning on anroid
-  console.ignoredYellowBox = ['Setting a timer'];
   return (
     <Provider store={store}>
       <App />
