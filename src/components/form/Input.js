@@ -6,28 +6,26 @@ import {useSelector, useDispatch} from "react-redux";
 // Actions
 import {addTodo, updateTodo} from "../../redux/actions/todosActions";
 
-export const Input = (todo) => {
+export const Input = ({todo, setTodo, newID, date, updateID}) => {
   const dispatch = useDispatch();
   const state = useSelector(state => state.todosReducer);
   const formStatus = state.formStatus;
-
-  console.log(todo);
   return (
     <Fragment>
       <TextInput
         placeholder="Add todo"
-        value={todo.todo}
-        onChangeText={todoText => todo.setTodo(todoText)}
+        value={todo}
+        onChangeText={todoText => setTodo(todoText)}
         style={styles.textInput}
         onSubmitEditing={() => {
-          if (todo.todo) {
+          if (todo) {
             if(formStatus === 'submit') {
-              todo.setTodo('');
-              return dispatch(addTodo(todo.id, todo.todo, todo.date));
+              setTodo('');
+              return dispatch(addTodo(newID, todo, date));
             }
             if(formStatus === 'update') {
-              todo.setTodo('');
-              return dispatch(updateTodo(todo.updateID, todo.todo, todo.date));
+              setTodo('');
+              return dispatch(updateTodo(updateID, todo, date));
             }
           }
         }}

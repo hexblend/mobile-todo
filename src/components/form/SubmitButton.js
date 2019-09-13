@@ -9,7 +9,7 @@ import {addTodo, updateTodo} from "../../redux/actions/todosActions";
 // Icons
 import {AntDesign, MaterialIcons} from "@expo/vector-icons";
 
-export const SubmitButton = (todo) => {
+export const SubmitButton = ({todo, setTodo, newID, date, updateID}) => {
   const dispatch = useDispatch();
   const state = useSelector(state => state.todosReducer);
   const formStatus = state.formStatus;
@@ -17,9 +17,9 @@ export const SubmitButton = (todo) => {
     <Fragment>
       {formStatus === 'submit' &&
         <TouchableOpacity onPress={() => {
-          if (todo.todo) {
-            todo.setTodo('');
-            return dispatch(addTodo(todo.id, todo.todo, todo.date));
+          if (todo) {
+            setTodo('');
+            return dispatch(addTodo(newID, todo, date));
           }
         }}>
           <MaterialIcons name="add" style={styles.Icon}/>
@@ -28,9 +28,9 @@ export const SubmitButton = (todo) => {
 
       {formStatus === 'update' &&
         <TouchableOpacity onPress={() => {
-          if (todo.todo) {
-            todo.setTodo('');
-            return dispatch(updateTodo(todo.updateID, todo.todo, todo.date));
+          if (todo) {
+            setTodo('');
+            return dispatch(updateTodo(updateID, todo, date));
           }
         }}>
           <AntDesign name="edit" style={styles.Icon}/>

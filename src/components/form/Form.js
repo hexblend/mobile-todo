@@ -8,26 +8,25 @@ import Input from "./Input";
 import uuid from "uuid/v1";
 
 
-export const Form = (todo) => {
-  const date = todo.date;
+export const Form = ({todo, setTodo, updateID, setUpdateID, date}) => {
   const id = uuid();
   return (
     <View style={{flexDirection: 'row'}}>
       <Input
-        todo={todo.todo}
-        setTodo={todoText => todo.setTodo(todoText)}
-        id={id}
+        todo={todo}
+        setTodo={todoText => setTodo(todoText)}
+        newID={id}
         date={date}
-        updateID={todo.updateID}
-        setUpdateID={id => todo.setUpdateID(id)}
+        updateID={updateID}
+        setUpdateID={id => setUpdateID(id)}
       />
       <SubmitButton
-        todo={todo.todo}
-        setTodo={singleTodo => todo.setTodo(singleTodo)}
-        id={id}
+        todo={todo}
+        setTodo={singleTodo => setTodo(singleTodo)}
+        newID={id}
         date={date}
-        updateID={todo.updateID}
-        setUpdateID={id => todo.setUpdateID(id)}
+        updateID={updateID}
+        setUpdateID={id => setUpdateID(id)}
       />
     </View>
   );

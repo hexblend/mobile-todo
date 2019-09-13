@@ -60,9 +60,12 @@ export const updateTodo = (id, todo, date) => {
   return async dispatch => {
     dispatch(changeFormStatus('update'));
     await updateDatabase(`todos/${date}/${id}`, {todo});
-    return {type: 'UPDATE_TODO'}
+    dispatch(updateTodoAsync());
   };
 };
+export const updateTodoAsync = () => {
+  return {type: 'UPDATE_TODO'}
+}
 
 // Remove
 export const deleteTodo = (id, date) => {
